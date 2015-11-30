@@ -86,8 +86,66 @@ def depthFirstSearch(problem):
     print "Is the start a goal?", problem.isGoalState(problem.getStartState())
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    from game import Directions
+    visited_array = []
+    visited_array.append(problem.getStartState())
+    
+    first_successors = problem.getSuccessors(visited_array[0])
+    successor_list = []
+    for successor in first_successors:
+        successor_list.append(successor)
+   
+
+    states = util.Queue()
+
+
+    def graphdfs(successors, visited_list):
+        print successors
+        for successor in successors:
+            print successor
+           
+            if not problem.isGoalState(successor[0]):
+                closed = False 
+                for visited in visited_list:
+                    #print visited
+                    #print successor
+                    if visited == successor[0]:
+                        closed = True
+                        
+                if not closed:
+                    states.push(successor)
+
+                    visited_list.append(successor[0])
+                    new_successors = []
+                    for new_successor in problem.getSuccessors(successor[0]):
+                        new_successors.append(new_successor)
+                    graphdfs(new_successors, visited_list)
+            else:
+                if successor[0] != problem.getStartState():
+                    break    
+
+
+                  
+    graphdfs(successor_list, visited_array)
+
+    steps = []
+    while not states.isEmpty():
+        step = states.pop()[1][0].lower()
+        print step
+        if step == 'n':
+            steps.append(Directions.NORTH)
+        elif step == 's':
+            steps.append(Directions.SOUTH)
+        elif step == 'e':
+            steps.append(Directions.EAST)
+        elif step == 'w':
+            steps.append(Directions.WEST)
+    print steps
+    return []
+
+
+
+    #util.raiseNotDefined()
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""

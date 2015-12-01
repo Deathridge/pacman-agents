@@ -86,38 +86,35 @@ def depthFirstSearch(problem):
     print "Is the start a goal?", problem.isGoalState(problem.getStartState())
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
-    from game import Directions
-    visited_array = []
-    states = util.Queue()
-
+    
+    visited_array = [problem.getStartState()]
+    states = util.Stack()
+    
     def graphdfs(start, visited_list):
         #print successors
         if start is problem.getStartState():
-            successors = problem.getSuccessors(start)
+            successors = problem.getSuccessors(start)            
         else:
             successors = problem.getSuccessors(start[0])
 
         for successor in successors:
-            print successors
-            if successor not in visited_list:
-                visited_list.append(successor)
-                states.push(successor)
+            
+            if successor[0] not in visited_list:
+                print successor
+                visited_list.append(successor[0])                
+                
                 graphdfs(successor, visited_list)
-                
-                if problem.isGoalState(successor[0]) and successor[0] is not problem.getStartState():
-                    print successor[0]
-                    return states
-                
-                else:
-                    graphdfs(successor, visited_list)
-                  
+                states.push(successor)
+            
 
+        return states         
 
-                  
-    graphdfs(problem.getStartState(), visited_array)
+    states = graphdfs(problem.getStartState(), visited_array)
+   
     steps = []
     while not states.isEmpty():
         step = states.pop()[1]
+        print step
         steps.append(step)
     print steps
     return steps

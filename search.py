@@ -87,46 +87,65 @@ def depthFirstSearch(problem):
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
     
-    visited_array = [problem.getStartState()]
-    states = util.Stack()
     
-    def graphdfs(start, visited_list):
-        #print successors
-        if start is problem.getStartState():
-            successors = problem.getSuccessors(start)            
+    solve = util.Stack()
+    #Push the node, path and directions taken to get there onto the stack to be tested for goal
+    solve.push((problem.getStartState(),[problem.getStartState()],[]))
+        
+    while not solve.isEmpty():
+        #Get current node, path used to reach it and direcions used to reach it from stack
+        (curr,path,dirs) = solve.pop()
+        for neighbour in problem.getSuccessors(curr):
+            if neighbour[0] in set(path):
+                continue
+            if not problem.isGoalState(neighbour[0]):
+                #if the current node isnt the goal push the node, path and directions taken to get there onto the stack to be tested for goal
+                solve.push((neighbour[0], path + [neighbour[0]], dirs+[neighbour[1]]))
+            #if the node is the goal then update the path and directions to be returned
+            elif problem.isGoalState(neighbour[0]):
+                path=path+[neighbour[0]]
+                dirs=dirs+[neighbour[1]]
+                break
         else:
-            successors = problem.getSuccessors(start[0])
+            continue
+        break  
 
-        for successor in successors:
-            
-            if successor[0] not in visited_list:
-                print successor
-                visited_list.append(successor[0])                
-                
-                graphdfs(successor, visited_list)
-                states.push(successor)
-            
-
-        return states         
-
-    states = graphdfs(problem.getStartState(), visited_array)
-   
     steps = []
-    while not states.isEmpty():
-        step = states.pop()[1]
-        print step
-        steps.append(step)
-    print steps
-    return steps
-
+   
+    return dirs
+    
 
 
     #util.raiseNotDefined()
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    solve = util.Queue()
+    #Push the node, path and directions taken to get there onto the stack to be tested for goal
+    solve.push((problem.getStartState(),[problem.getStartState()],[]))
+        
+    while not solve.isEmpty():
+        #Get current node, path used to reach it and direcions used to reach it from stack
+        (curr,path,dirs) = solve.pop()
+        for neighbour in problem.getSuccessors(curr):
+            if neighbour[0] in set(path):
+                continue
+            if not problem.isGoalState(neighbour[0]):
+                #if the current node isnt the goal push the node, path and directions taken to get there onto the stack to be tested for goal
+                solve.push((neighbour[0], path + [neighbour[0]], dirs+[neighbour[1]]))
+            #if the node is the goal then update the path and directions to be returned
+            elif problem.isGoalState(neighbour[0]):
+                path=path+[neighbour[0]]
+                dirs=dirs+[neighbour[1]]
+                break
+        else:
+            continue
+        break  
+
+    steps = []
+   
+    return dirs
+    
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""

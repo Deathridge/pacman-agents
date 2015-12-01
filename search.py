@@ -103,14 +103,14 @@ def depthFirstSearch(problem):
                 solve.push((neighbour[0], path + [neighbour[0]], dirs+[neighbour[1]]))
             #if the node is the goal then update the path and directions to be returned
             elif problem.isGoalState(neighbour[0]):
-                path=path+[neighbour[0]]
+               
+                path=path + [neighbour[0]]
                 dirs=dirs+[neighbour[1]]
                 break
+
         else:
             continue
         break  
-
-    steps = []
    
     return dirs
     
@@ -132,10 +132,10 @@ def breadthFirstSearch(problem):
                 continue
             if not problem.isGoalState(neighbour[0]):
                 #if the current node isnt the goal push the node, path and directions taken to get there onto the stack to be tested for goal
-                solve.push((neighbour[0], path + [neighbour[0]], dirs+[neighbour[1]]))
+                solve.push((neighbour[0], [neighbour[0]]+path, dirs+[neighbour[1]]))
             #if the node is the goal then update the path and directions to be returned
             elif problem.isGoalState(neighbour[0]):
-                path=path+[neighbour[0]]
+                path=[neighbour[0]]+path
                 dirs=dirs+[neighbour[1]]
                 break
         else:
